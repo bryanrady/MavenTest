@@ -1,0 +1,40 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        //这里在测试jcenter上传的时候，因为报classpath和gradle版本对不上，所以两个地方都修改了下
+        classpath "com.android.tools.build:gradle:3.6.0"
+
+        //自动化maven打包插件
+        classpath "com.github.dcendents:android-maven-gradle-plugin:1.5"
+
+        //配置上传项目到jcenter中央仓库
+        classpath 'com.novoda:bintray-release:0.9.1'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+
+        maven {
+            url 'http://localhost:8081/nexus/content/groups/maven-test-group/'
+        }
+        
+//        maven{
+//            url 'http://localhost:8081/nexus/content/repositories/snapshots/'
+//        }
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

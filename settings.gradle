@@ -1,0 +1,4 @@
+include ':library_jcenter'
+include ':library_nexus'
+include ':app'
+rootProject.name = "MavenTest"

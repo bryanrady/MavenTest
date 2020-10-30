@@ -1,0 +1,57 @@
+apply plugin: 'maven'
+
+//是否是Release正式版本构建，通过判断LIBRARY_VERSION中有没有snapshot来识别
+def isReleaseBuild = "snapshot" != DEPLOY_VERSION
+
+//获取要上传Nexus私服仓库的url
+def repositoryUrl = isReleaseBuild ? RELEASE_REPOSITORY_URL : SNAPSHOT_REPOSITORY_URL
+
+//获取Nexus私服仓库的用户名
+def username = hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+
+//获取Nexus私服仓库的密码
+def password = hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+
+
+//在android {}中添加如下脚本
+afterEvaluate {
+    uploadArchives {
+        repositories {
+            mavenDeployer{
+                repository(url: repositoryUrl){
+                    authentication(userName: username, password: password)
+                }
+
+                pom.groupId = GROUP_ID
+                pom.artifactId = ARTIFACTID
+                pom.version = LIBRARY_VERSION
+            }
+        }
+    }
+
+    task androidJavadocs(type: Javadoc){
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs){
+        classifier = 'javadoc'
+        from androidJavadocs.destinationDir
+    }
+    task androidSourcesJar(type: Jar){
+        classifier = 'sources'
+        from android.sourceSets.main.java.sourceFiles
+    }
+
+    //解决 JavaDoc 中文注释生成失败的问题
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+        options.addStringOption('charSet', 'UTF-8')
+    }
+
+    artifacts {
+        archives androidSourcesJar
+        archives androidJavadocsJar
+    }
+
+}
