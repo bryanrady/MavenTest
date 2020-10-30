@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.bryanrady.library_jcenter.JcenterTestUtil;
 import com.bryanrady.library_nexus.NexusTestUtil;
 
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         NexusTestUtil.testNexusAar();
         NexusTestUtil.testNexusRefresh();
 
-
+        //测试上传到jcenter的aar
+        JcenterTestUtil.testJcenter();
     }
 }

@@ -30,9 +30,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //nexus测试
     //implementation  'GROUP_ID : ARTIFACTID : LIBRARY_VERSION'
     implementation 'com.bryanrady.library_nexus:test:1.0.1-snapshot'
 
-
-    //implementation 'com.bryanrady.library_nexus:test:1.0.1'
+    //jcenter测试
+    implementation 'com.bryanrady:library_jcenter:1.0.3'
 }
